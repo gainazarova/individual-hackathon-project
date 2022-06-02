@@ -7,6 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from . import serializers
 from .send_email import send_confirmation_email, send_reset_password_email
+from .tasks import send_activation_code
 
 User = get_user_model()
 
@@ -17,7 +18,8 @@ class RegistrationApiView(APIView):
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
             if user:
-                send_confirmation_email(user)
+                # send_confirmation_email(user)
+                send_activation_code.delay(user.email, user.activation_code)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -26,11 +28,13 @@ class ActivationView(APIView):
     def get(self, request, activation_code):
         try:
             user = User.objects.get(activation_code=activation_code)
+            print(user, 'asdasdasd')
             user.is_active = True
             user.activation_code = ''
             user.save()
             return Response({'msg': 'Successfully activated'}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
+            print('asdasd')
             return Response({'msg': 'Link expired'}, status=status.HTTP_400_BAD_REQUEST)
 
 

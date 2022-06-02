@@ -5,7 +5,7 @@ from account import views
 
 urlpatterns = [
     path('register/', views.RegistrationApiView.as_view()),
-    path('activate/<uuid:activation_code>', views.ActivationView.as_view()),
+    path('activate/<uuid:activation_code>/', views.ActivationView.as_view()),
     path('logout/', views.LogoutApiView.as_view()),
     path('login/', views.LoginApiView.as_view()),
     path('refresh/', TokenRefreshView.as_view()),
