@@ -1,6 +1,6 @@
 from django.db.models import Avg
 from rest_framework import serializers
-from movie.models import Genre, Movie, Comment
+from movie.models import Genre, Movie, Comment, Favorite
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -52,4 +52,17 @@ class CommentSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['owner'] = instance.owner.email
+        return representation
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Favorite
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['user'] = instance.user.email
+        representation['movie'] = instance.movie.title
         return representation

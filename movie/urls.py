@@ -10,4 +10,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('comments/', views.CommentListCreateView.as_view()),
     path('comments/<int:pk>/', views.CommentDetailView.as_view()),
+    path('favorites/', views.FavoritesList.as_view()),
 ]
