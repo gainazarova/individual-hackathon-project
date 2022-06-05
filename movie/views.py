@@ -5,6 +5,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
+
+from movie.parsing import BASE_URL, get_html, get_info
 from . import serializers
 from movie.models import Genre, Movie, Comment, Likes, Favorite
 from rest_framework import permissions, generics, status
@@ -123,3 +125,13 @@ class FavoritesList(APIView):
         movie = user.favorites.all()
         serializer = serializers.FavoriteSerializer(movie, many=True).data
         return Response(serializer)
+
+
+class ParsingView(APIView):
+
+    def get(self, request):
+        parsing = get_info(get_html(BASE_URL))
+        return Response(parsing)
+
+        
+get_info(get_html(BASE_URL)) 

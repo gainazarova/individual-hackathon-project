@@ -11,4 +11,5 @@ urlpatterns = [
     path('comments/', views.CommentListCreateView.as_view()),
     path('comments/<int:pk>/', views.CommentDetailView.as_view()),
     path('favorites/', views.FavoritesList.as_view()),
+    path('parsing/', views.ParsingView.as_view()),
 ]
